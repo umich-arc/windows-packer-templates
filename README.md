@@ -9,7 +9,7 @@ Using racker, this repo can generate dynamic packer templates for building Windo
 
 ### Getting Started ###
 1. Install racker by running `bundle install`
-- Using the provided `unattend-template.xml` file, use sed or another method to replace the following strings:
+- Using the provided `unattend-template.xml` file, use sed or another method to replace the following strings and make a file called `Autounattend.xml`:
   - `111USERNAME` - local user created to run packer scripts
   - `111PASSWORD` - password for local user
   - `111ADMINPASS` - password for built-in admin account
@@ -18,6 +18,20 @@ Using racker, this repo can generate dynamic packer templates for building Windo
   - `111TIMEZONE` - your timezone.
 - Use racker to generate your packer template. The syntax is `racker template_1.rb template_2.rb output.json`
 - Build your packer images!
+
+#### Required Environment Variables ####
+- `VM_NAME` - VM name
+- `WINRM_USER` - username for packer WinRM
+- `WINRM_PASS` - password for WinRM user
+- `NUM_CPU` - number of CPUs for VM
+- `MB_RAM` - MB of RAM for VM
+- `UNATTEND_FILE` - path to `Autounattend.xml` file created in previous steps.
+
+#### Optional Environment variables ####
+- `PACKER_TEMPLATE_ROOT` - prefix for drivers/scripts folders
+- `CLOUDBASE_CONFIG_ROOT` - prefix for cloudbase_config folder
+- `GUEST_FILES_ROOT` - prefix for guest_os_files folder
+
 
 ### References ###
   - Packer: https://packer.io
