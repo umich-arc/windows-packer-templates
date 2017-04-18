@@ -1,0 +1,83 @@
+language: ruby
+
+rvm:
+  - 2.4.0
+
+env:
+  global:
+    - VM_NAME=test
+    - NUM_CUP=1
+    - MB_RAM=2048
+    - DISK_SIZE=25600
+    - UNATTEND_FILE=unattend-template.xml
+    - TEMPLATE_DIR=./racker_templates/
+    - WINRM_USER=vagrant
+    - WINRM_PASS=vagrant
+
+script:
+  - bundle install
+  - wget https://releases.hashicorp.com/packer/1.0.0/packer_1.0.0_linux_amd64.zip
+  - sudo apt-get install unzip
+  - unzip packer_1.0.0_linux_amd64.zip -d ./ && chmod +x ./packer
+  - >-
+    echo "$TEMPLATE_DIR" | xargs -I % racker
+    %builder_qemu.rb
+    %variable_common.rb
+    %win_server_2016_standard.rb
+    %provision_common.rb
+    %postprocess_manifest.rb
+    %template_custom.rb
+    qemu-2016.json
+  - ./packer validate qemu-2016.json
+  - >-
+    echo "$TEMPLATE_DIR" | xargs -I % racker
+    %builder_virtualbox.rb
+    %variable_common.rb
+    %win_server_2016_standard.rb
+    %provision_common.rb
+    %postprocess_manifest.rb
+    %template_custom.rb
+    virtualbox-2016.json
+  - ./packer validate virtualbox-2016.json
+  - >-
+    echo "$TEMPLATE_DIR" | xargs -I % racker
+    %builder_qemu.rb
+    %variable_common.rb
+    %win_server_2012r2_standard.rb
+    %provision_common.rb
+    %postprocess_manifest.rb
+    %template_custom.rb
+    qemu-2012r2.json
+  - ./packer validate qemu-2012r2.json
+  - >-
+    echo "$TEMPLATE_DIR" | xargs -I % racker
+    %builder_virtualbox.rb
+    %variable_common.rb
+    %win_server_2012r2_standard.rb
+    %provision_common.rb
+    %postprocess_manifest.rb
+    %template_custom.rb
+    virtualbox-2012r2.json
+  - ./packer validate virtualbox-2012r2.json
+  - >-
+    echo "$TEMPLATE_DIR" | xargs -I % racker
+    %builder_qemu.rb
+    %variable_common.rb
+    %win_10_enterprise.rb
+    %provision_common.rb
+    %postprocess_manifest.rb
+    %template_custom.rb
+    qemu-10.json
+  - ./packer validate qemu-10.json
+  - >-
+    echo "$TEMPLATE_DIR" | xargs -I % racker
+    %builder_virtualbox.rb
+    %variable_common.rb
+    %win_10_enterprise.rb
+    %provision_common.rb
+    %postprocess_manifest.rb
+    %template_custom.rb
+    virtualbox-10.json
+  - ./packer validate virtualbox-10.json
+
+sudo: required
