@@ -64,4 +64,26 @@ New-Item -Path $reg_path -Force
 New-ItemProperty -Path $reg_path -Name $reg_name -PropertyType DWORD -Value 1 -Force
 
 cmd /c "defrag /c /x /h"
-cmd /c "C:\ProgramData\packer\sdelete -q -z C:"
+
+Write-Host "Wiping empty space on disk..."
+$FilePath="C:\zero.tmp"
+$Volume = Get-WmiObject win32_logicaldisk -filter "DeviceID='C:'"
+$ArraySize= 64kb
+$SpaceToLeave= $Volume.Size * 0.05
+$FileSize= $Volume.FreeSpace - $SpacetoLeave
+$ZeroArray= new-object byte[]($ArraySize)
+
+$Stream= [io.File]::OpenWrite($FilePath)
+try {
+   $CurFileSize = 0
+    while($CurFileSize -lt $FileSize) {
+        $Stream.Write($ZeroArray,0, $ZeroArray.Length)
+        $CurFileSize +=$ZeroArray.Length
+    }
+}
+finally {
+    if($Stream) {
+        $Stream.Close()
+    }
+}
+Remove-Item $FilePath
