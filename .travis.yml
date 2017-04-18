@@ -19,6 +19,7 @@ script:
   - wget https://releases.hashicorp.com/packer/1.0.0/packer_1.0.0_linux_amd64.zip
   - sudo apt-get install unzip
   - unzip packer_1.0.0_linux_amd64.zip -d ./ && chmod +x ./packer
+  - ls racker_templates/ | xargs -I % racker % %-test.json
   - >-
     echo "$TEMPLATE_DIR" | xargs -I % racker
     %builder_qemu.rb
