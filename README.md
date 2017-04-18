@@ -1,4 +1,4 @@
-Windows Templates for Packer [![](https://travis-ci.org/arc-ts/windows-packer-templates.svg?branch=master)]()
+Windows Templates for Packer [![Build Status](https://travis-ci.org/arc-ts/windows-packer-templates.svg?branch=master)](https://travis-ci.org/arc-ts/windows-packer-templates)
 =============================
 Using racker, this repo can generate dynamic packer templates for building Windows VMs.
 
@@ -22,4 +22,4 @@ Using racker, this repo can generate dynamic packer templates for building Windo
 ### References ###
   - Packer: https://packer.io
   - Racker: https://github.com/aspring/racker
-  - Windows Unattend files: https://technet.microsoft.com/en-us/library/cc749317(v=ws.10).aspx
+  - Windows Unattend files: https://technet.microsoft.com/en-us/library/cc722132(v=ws.10).aspx
